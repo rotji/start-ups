@@ -1,0 +1,122 @@
+select {
+  flex: 1 1 40%;
+  min-width: 280px;
+  max-width: 400px;
+  font-size: 1em;
+  border: 1px solid #d1d5db;
+  border-radius: var(--border-radius);
+  padding: 0.7em;
+  background: #f9fafb;
+  transition: border-color var(--transition);
+  color: #18181b;
+  font-weight: 600;
+  box-sizing: border-box;
+}
+select:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+select option {
+  color: #18181b;
+  font-weight: 600;
+}
+/* Make the form more horizontal and compact */
+/* Make the form more horizontal and compact */
+.createStartupPage {
+  max-width: 100vw;
+  width: 100vw;
+  margin: 0;
+  background: #fff;
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  padding: 2em 0;
+  min-height: 100vh;
+  overflow-x: auto;
+}
+h2 {
+  color: #18181b;
+  font-size: 2em;
+  font-weight: 800;
+  margin-bottom: 1em;
+  letter-spacing: 0.5px;
+}
+.form {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5em 2em;
+  width: 95vw;
+  margin: 0 auto;
+  align-items: start;
+}
+input, textarea, select {
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+textarea {
+  min-height: 60px;
+  resize: vertical;
+}
+button {
+  grid-column: span 4;
+  max-width: 300px;
+  justify-self: end;
+}
+@media (max-width: 1200px) {
+  .form {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  button {
+    grid-column: span 2;
+  }
+}
+@media (max-width: 700px) {
+  .form {
+    grid-template-columns: 1fr;
+  }
+  button {
+    grid-column: span 1;
+  }
+}
+input, textarea {
+  font-size: 1em;
+  border: 1px solid #d1d5db;
+  border-radius: var(--border-radius);
+  padding: 0.7em;
+  background: #f9fafb;
+  transition: border-color var(--transition);
+  color: #18181b;
+  font-weight: 600;
+}
+input::placeholder, textarea::placeholder {
+  color: #27272a;
+  font-weight: 700;
+  opacity: 1;
+}
+input:focus, textarea:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+button {
+  background: var(--primary-color);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 0.8em 2em;
+  cursor: pointer;
+  transition: background var(--transition);
+}
+button:disabled {
+  background: #d1d5db;
+  cursor: not-allowed;
+}
+.error {
+  color: var(--danger-color);
+  margin-top: 0.5em;
+}
+.success {
+  color: var(--accent-color);
+  margin-top: 0.5em;
+}
