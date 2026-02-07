@@ -4,8 +4,9 @@ import styles from './styles/globals.module.css';
 import { Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import HomeHero from './components/HomeHero';
-import FeaturedStartups from './components/FeaturedStartups';
 import CreateStartup from './pages/CreateStartup';
+
+import Startups from './pages/Startups';
 
 
 export default function App() {
@@ -48,21 +49,8 @@ export default function App() {
       <Header />
       <main className={styles.mainContent}>
         <Routes>
-          <Route path="/" element={
-            <>
-              <HomeHero />
-              {loading ? (
-                <div>Loading startups...</div>
-              ) : error ? (
-                <div style={{ color: 'red' }}>{error}</div>
-              ) : (
-                <>
-                  {console.log('[App] Passing startups to FeaturedStartups:', startups)}
-                  <FeaturedStartups startups={startups} />
-                </>
-              )}
-            </>
-          } />
+          <Route path="/" element={<HomeHero />} />
+          <Route path="/startups" element={<Startups startups={startups} loading={loading} error={error} />} />
           <Route path="/create-startup" element={<CreateStartup onCreated={handleCreated} />} />
         </Routes>
       </main>
