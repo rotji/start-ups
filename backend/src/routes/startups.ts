@@ -47,10 +47,26 @@ router.post('/', async (req, res) => {
 });
 
 // GET /api/startups - list all startups (for now, all as featured)
+// GET /api/startups - list all startups with advanced filtering
 router.get('/', async (req, res) => {
   try {
-    console.log('[GET /api/startups] Fetching all startups');
-    const startups = await repo.findAll();
+    // Build filter from query params
+    const filter: any = {};
+    const { category, problem, stage, revenueMin, revenueMax, location, size, name } = req.query;
+    if (category) filter.categories = { $in: Array.isArray(category) ? category : [category] };
+    if (problem) filter.problems = { $in: Array.isArray(problem) ? problem : [problem] };
+    if (stage) filter.stage = stage;
+    if (name) filter.name = { $regex: name, $options: 'i' };
+    if (location) filter.location = { $regex: location, $options: 'i' };
+    if (size) filter.size = size;
+    if (revenueMin || revenueMax) {
+      filter.revenue = {};
+      if (revenueMin) filter.revenue.$gte = revenueMin;
+      if (revenueMax) filter.revenue.$lte = revenueMax;
+    }
+    // Add more filters as needed
+    console.log('[GET /api/startups] Fetching startups with filter:', filter);
+    const startups = await repo.findAll(filter);
     console.log('[GET /api/startups] Returning startups:', startups.length);
     res.json({ startups });
   } catch (err) {
