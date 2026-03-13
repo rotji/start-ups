@@ -20,6 +20,7 @@ const FeaturedStartups: React.FC<FeaturedStartupsProps> = ({ startups }) => {
   const [openDetails, setOpenDetails] = useState<string | null>(null);
 
   // Runtime check for duplicate IDs
+  const [duplicateIds, setDuplicateIds] = useState<string[]>([]);
   React.useEffect(() => {
     const idCounts: Record<string, number> = {};
     startups.forEach(s => {
@@ -27,50 +28,67 @@ const FeaturedStartups: React.FC<FeaturedStartupsProps> = ({ startups }) => {
         idCounts[s.id] = (idCounts[s.id] || 0) + 1;
       }
     });
-    const duplicates = Object.entries(idCounts).filter(([_, count]) => count > 1);
+    const duplicates = Object.entries(idCounts).filter(([_, count]) => count > 1).map(([id]) => id);
+    setDuplicateIds(duplicates);
     if (duplicates.length > 0) {
-      console.warn('[FeaturedStartups] Duplicate startup IDs detected:', duplicates.map(([id]) => id));
+      console.warn('[FeaturedStartups] Duplicate startup IDs detected:', duplicates);
     }
   }, [startups]);
 
+  // Show newest startups first
+  const startupsReversed = [...startups].reverse();
   return (
-    <div className={styles.gridWrapNoCard}>
-      {startups.map((startup, idx) => (
-        <div className={styles.startupBlock} key={startup.id || idx}>
-          <div className={styles.nameBig}>{startup.name}</div>
-          {startup.imageUrl && (
-            <div className={styles.logoSquareWrap}>
-              <img
-                src={startup.imageUrl}
-                alt={startup.name + " logo"}
-                className={styles.logoSquareImg}
-              />
-            </div>
-          )}
-          <button className={styles.detailsBtn} onClick={() => setOpenDetails(openDetails === startup.id ? null : startup.id)}>
-            {openDetails === startup.id ? 'Hide Details' : 'Details'}
-          </button>
-          {openDetails === startup.id && (
-            <div className={styles.fieldsTable}>
-              <div className={styles.row}><span className={styles.label}>Description:</span><span className={styles.value}>{startup.description || '-'}</span></div>
-              <div className={styles.row}><span className={styles.label}>Category:</span><span className={styles.value}>{Array.isArray(startup.categories) ? startup.categories.join(', ') : startup.category || '-'}</span></div>
-              <div className={styles.row}><span className={styles.label}>Problems:</span><span className={styles.value}>{Array.isArray(startup.problems) ? startup.problems.join(', ') : startup.problems || '-'}</span></div>
-              <div className={styles.row}><span className={styles.label}>Stage:</span><span className={styles.value}>{startup.stage || '-'}</span></div>
-              <div className={styles.row}><span className={styles.label}>Team:</span><span className={styles.value}>{Array.isArray(startup.team) ? startup.team.join(', ') : startup.team || '-'}</span></div>
-              <div className={styles.row}><span className={styles.label}>Funding Needs:</span><span className={styles.value}>{startup.fundingNeeds || '-'}</span></div>
-              <div className={styles.row}><span className={styles.label}>Pitch Deck URL:</span><span className={styles.value}>{startup.pitchDeckUrl || '-'}</span></div>
-              <div className={styles.row}><span className={styles.label}>Pitch Video URL:</span><span className={styles.value}>{startup.pitchVideoUrl || '-'}</span></div>
-              <div className={styles.row}><span className={styles.label}>Demo URL:</span><span className={styles.value}>{startup.demoUrl || '-'}</span></div>
-              <div className={styles.row}><span className={styles.label}>Revenue:</span><span className={styles.value}>{startup.revenue || '-'}</span></div>
-              <div className={styles.row}><span className={styles.label}>Phone:</span><span className={styles.value}>{startup.phone || '-'}</span></div>
-              <div className={styles.row}><span className={styles.label}>Email:</span><span className={styles.value}>{startup.email || '-'}</span></div>
-              <div className={styles.row}><span className={styles.label}>Social Media:</span><span className={styles.value}>{startup.socialMedia || '-'}</span></div>
-              <div className={styles.row}><span className={styles.label}>Created At:</span><span className={styles.value}>{startup.createdAt ? new Date(startup.createdAt).toLocaleString() : '-'}</span></div>
-            </div>
-          )}
+    <>
+      {duplicateIds.length > 0 && (
+        <div style={{ color: 'red', fontWeight: 'bold', marginBottom: '1em', textAlign: 'center' }}>
+          Warning: Duplicate startup IDs detected: {duplicateIds.join(', ')}. This can cause multiple cards to expand at once. Please ensure all startups have unique IDs.
         </div>
-      ))}
-    </div>
+      )}
+      <div className={styles.featuredGrid}>
+        {startupsReversed.map((startup, idx) => (
+          <div className={styles.startupCard} key={startup.id || idx}>
+            <div className={styles.startupTitle}>{startup.name}</div>
+            <div className={styles.startupMediaRow}>
+              {startup.imageUrl && (
+                <div className={styles.startupImgWrap}>
+                  <img
+                    src={startup.imageUrl}
+                    alt={startup.name + " logo"}
+                    className={styles.startupImg}
+                  />
+                </div>
+              )}
+              {startup.videoUrl && (
+                <div className={styles.startupVideoWrap}>
+                  <video src={startup.videoUrl} controls className={styles.startupVideo} />
+                </div>
+              )}
+            </div>
+            <div className={styles.startupDetails}>
+              <button className={styles.detailsBtn} onClick={() => setOpenDetails(openDetails === startup.id ? null : startup.id)}>
+                {openDetails === startup.id ? 'Hide Details' : 'Details'}
+              </button>
+              <div className={openDetails === startup.id ? `${styles.detailsContent} ${styles.detailsContentOpen}` : styles.detailsContent}>
+                <div className={styles.startupRow}><span className={styles.startupLabel}>Description</span><span className={styles.startupColon}>:</span><span className={styles.startupValue}>{startup.description || '-'}</span></div>
+                <div className={styles.startupRow}><span className={styles.startupLabel}>Category</span><span className={styles.startupColon}>:</span><span className={styles.startupValue}>{Array.isArray(startup.categories) ? startup.categories.join(', ') : startup.category || '-'}</span></div>
+                <div className={styles.startupRow}><span className={styles.startupLabel}>Problems</span><span className={styles.startupColon}>:</span><span className={styles.startupValue}>{Array.isArray(startup.problems) ? startup.problems.join(', ') : startup.problems || '-'}</span></div>
+                <div className={styles.startupRow}><span className={styles.startupLabel}>Stage</span><span className={styles.startupColon}>:</span><span className={styles.startupValue}>{startup.stage || '-'}</span></div>
+                <div className={styles.startupRow}><span className={styles.startupLabel}>Team</span><span className={styles.startupColon}>:</span><span className={styles.startupValue}>{Array.isArray(startup.team) ? startup.team.join(', ') : startup.team || '-'}</span></div>
+                <div className={styles.startupRow}><span className={styles.startupLabel}>Funding Needs</span><span className={styles.startupColon}>:</span><span className={styles.startupValue}>{startup.fundingNeeds || '-'}</span></div>
+                <div className={styles.startupRow}><span className={styles.startupLabel}>Pitch Deck URL</span><span className={styles.startupColon}>:</span><span className={styles.startupValue}>{startup.pitchDeckUrl || '-'}</span></div>
+                <div className={styles.startupRow}><span className={styles.startupLabel}>Pitch Video URL</span><span className={styles.startupColon}>:</span><span className={styles.startupValue}>{startup.pitchVideoUrl || '-'}</span></div>
+                <div className={styles.startupRow}><span className={styles.startupLabel}>Demo URL</span><span className={styles.startupColon}>:</span><span className={styles.startupValue}>{startup.demoUrl || '-'}</span></div>
+                <div className={styles.startupRow}><span className={styles.startupLabel}>Revenue</span><span className={styles.startupColon}>:</span><span className={styles.startupValue}>{startup.revenue || '-'}</span></div>
+                <div className={styles.startupRow}><span className={styles.startupLabel}>Phone</span><span className={styles.startupColon}>:</span><span className={styles.startupValue}>{startup.phone || '-'}</span></div>
+                <div className={styles.startupRow}><span className={styles.startupLabel}>Email</span><span className={styles.startupColon}>:</span><span className={styles.startupValue}>{startup.email || '-'}</span></div>
+                <div className={styles.startupRow}><span className={styles.startupLabel}>Social Media</span><span className={styles.startupColon}>:</span><span className={styles.startupValue}>{startup.socialMedia || '-'}</span></div>
+                <div className={styles.startupRow}><span className={styles.startupLabel}>Created At</span><span className={styles.startupColon}>:</span><span className={styles.startupValue}>{startup.createdAt ? new Date(startup.createdAt).toLocaleString() : '-'}</span></div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
   );
 };
 

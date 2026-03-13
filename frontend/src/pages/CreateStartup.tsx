@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from '../styles/CreateStartup.module.css';
+import MediaUpload from '../components/MediaUpload';
 
 const CATEGORIES = [
   'Fintech', 'Healthtech', 'Edtech', 'Agritech', 'Data', 'AI', 'SaaS', 'E-commerce', 'Logistics', 'Mobility',
@@ -23,21 +24,15 @@ export default function CreateStartup({ onCreated }: { onCreated?: () => void } 
     phone: '',
     email: '',
     socialMedia: '',
-    image: null as File | null,
+    imageUrl: '', // now stores Cloudinary URL
+    videoUrl: '', // for Cloudinary video URL
   });
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
-    if (e.target.name === 'image' && e.target instanceof HTMLInputElement && e.target.files) {
-      const file = e.target.files[0];
-      setForm({ ...form, image: file });
-      setImagePreview(file ? URL.createObjectURL(file) : null);
-    } else {
-      setForm({ ...form, [e.target.name]: e.target.value });
-    }
+    setForm({ ...form, [e.target.name]: e.target.value });
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -46,20 +41,17 @@ export default function CreateStartup({ onCreated }: { onCreated?: () => void } 
     setError(null);
     setSuccess(false);
     try {
-      const formData = new FormData();
-      Object.entries(form).forEach(([key, value]) => {
-        if (value !== null) formData.append(key, value as any);
-      });
+      const payload = { ...form };
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/startups`, {
         method: 'POST',
-        body: formData,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error('Failed to create start-up');
       setSuccess(true);
       setForm({
-        name: '', description: '', category: '', problems: '', stage: '', team: '', fundingNeeds: '', pitchDeckUrl: '', pitchVideoUrl: '', demoUrl: '', revenue: '', phone: '', email: '', socialMedia: '', image: null,
+        name: '', description: '', category: '', problems: '', stage: '', team: '', fundingNeeds: '', pitchDeckUrl: '', pitchVideoUrl: '', demoUrl: '', revenue: '', phone: '', email: '', socialMedia: '', imageUrl: '', videoUrl: ''
       });
-      setImagePreview(null);
       if (onCreated) onCreated();
     } catch {
       setError('Could not create start-up. Please try again.');
@@ -106,10 +98,18 @@ export default function CreateStartup({ onCreated }: { onCreated?: () => void } 
           <option value="500k-1m">500k - 1m dollars</option>
           <option value="2m-10m">2m - 10m dollars</option>
         </select>
-        <input type="file" name="image" accept="image/*" onChange={handleChange} required />
-        {imagePreview && (
-          <img src={imagePreview} alt="Startup Preview" style={{ maxWidth: 120, maxHeight: 120, borderRadius: 8, marginBottom: 8 }} />
-        )}
+        <MediaUpload
+          label="Upload Logo/Image"
+          accept="image/*"
+          type="image"
+          onUpload={(url: string) => setForm(f => ({ ...f, imageUrl: url }))}
+        />
+        <MediaUpload
+          label="Upload Pitch Video (1 min max)"
+          accept="video/*"
+          type="video"
+          onUpload={(url: string) => setForm(f => ({ ...f, videoUrl: url }))}
+        />
         <button type="submit" disabled={loading}>{loading ? 'Creating...' : 'Create Start-up'}</button>
         {error && <div className={styles.error}>{error}</div>}
         {success && <div className={styles.success}>Start-up created successfully!</div>}

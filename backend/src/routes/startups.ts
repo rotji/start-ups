@@ -1,30 +1,18 @@
 import { Router } from 'express';
 import { MongoStartupRepository } from '../repositories/MongoStartupRepository';
-import multer from 'multer';
-import path from 'path';
-import fs from 'fs';
+// Removed multer and local file upload logic
 import { ObjectId } from 'mongodb';
 
 const router = Router();
 const repo = new MongoStartupRepository();
-const upload = multer({
-  dest: path.join(__dirname, '../../uploads'),
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB max
-});
 
-// POST /api/startups - create a new startup (accept any input, including image)
-router.post('/', upload.single('image'), async (req, res) => {
+
+// POST /api/startups - create a new startup (Cloudinary only)
+router.post('/', async (req, res) => {
   try {
-    console.log('[POST /api/startups] Incoming request:', req.body);
+    // Accept JSON only
     const data = req.body;
-    let imageUrl = '';
-    if (req.file) {
-      const ext = path.extname(req.file.originalname);
-      const newPath = path.join(req.file.destination, req.file.filename + ext);
-      fs.renameSync(req.file.path, newPath);
-      imageUrl = `/uploads/${req.file.filename + ext}`;
-      console.log('[POST /api/startups] Image saved at:', imageUrl);
-    }
+    console.log('[POST /api/startups] Incoming request:', data);
     const now = new Date();
     const startup = {
       id: new ObjectId().toString(),
@@ -42,7 +30,8 @@ router.post('/', upload.single('image'), async (req, res) => {
       phone: data.phone || '',
       email: data.email || '',
       socialMedia: data.socialMedia || '',
-      imageUrl,
+      imageUrl: data.imageUrl || '',
+      videoUrl: data.videoUrl || '',
       createdAt: now,
       updatedAt: now,
       createdBy: '',

@@ -1,215 +1,132 @@
-.gridWrapNoCard {
+.featuredGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.2rem;
+  padding: 1.2rem 0;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2em 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 2.5em;
-  justify-items: center;
-  align-items: start;
 }
-.startupBlock {
+/* Equal card with black border */
+.startupCard {
+  background: #fff;
+  border: 2px solid #18181b;
+  border-radius: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: none;
-  box-shadow: none;
-  padding: 0 0 2em 0;
+  justify-content: flex-start;
+  padding: 0.3em 0.3em 0.2em 0.3em;
+  min-width: 180px;
+  min-height: 180px;
+  max-width: 220px;
+  width: 100%;
+  box-sizing: border-box;
 }
-.nameBig {
-  font-size: 1.5em;
+/* ...existing code... */
+ .startupTitle {
+  font-size: 1.1em;
   font-weight: bold;
   color: #18181b;
+  margin-bottom: 0.2em;
+  margin-top: 0.05em;
   text-align: center;
-  margin-bottom: 0.7em;
-  margin-top: 0.2em;
+  width: 100%;
 }
-.logoSquareWrap {
-  width: 180px;
-  height: 180px;
+ .startupMediaRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  width: 100%;
+  margin-bottom: 0.15em;
+}
+.startupImgWrap, .startupVideoWrap {
+  width: 80px;
+  height: 80px;
   display: flex;
   justify-content: center;
   align-items: center;
   background: #f1f5f9;
-  border-radius: 18px;
+  border-radius: 12px;
   overflow: hidden;
-  margin-bottom: 1em;
 }
-.logoSquareImg {
+.startupImg {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 18px;
+  border-radius: 12px;
 }
-.detailsBtn {
-  margin: 0.5em 0 1em 0;
-  padding: 0.5em 1.5em;
-  font-size: 1em;
-  font-weight: bold;
-  color: #fff;
-  background: #2563eb;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-.detailsBtn:hover {
-  background: #38bdf8;
-}
-.titleCenter {
-  font-size: 1.2em;
-  font-weight: bold;
-  color: #fff;
-  text-align: center;
-  margin-bottom: 0.7em;
-}
-.logoWrap {
+.startupVideo {
   width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 1em;
-}
-.logoImg {
-  width: 64px;
-  height: 64px;
+  height: 100%;
   object-fit: cover;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(56,189,248,0.10);
-  background: #f1f5f9;
+  background: #000;
 }
-.featuredSection {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto 2em auto;
-  padding: 0 2em;
-}
-.sectionTitle {
-  font-size: 1.4em;
-  font-weight: 700;
-  color: var(--primary-color);
-  margin-bottom: 1em;
-}
-.cards {
+.startupDetails {
   display: flex;
-  gap: 2em;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-}
-.card {
-  background: #fff;
-  border-radius: var(--border-radius);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-  padding: 1.5em 1.2em;
-  min-width: 220px;
-  max-width: 260px;
-  flex: 1 1 220px;
-  display: flex;
+  flex-direction: column;
   align-items: flex-start;
-  gap: 1em;
-  transition: box-shadow var(--transition);
+  margin-top: auto;
+  margin-bottom: 0.05em;
+  width: 100%;
 }
-.card:hover {
-  box-shadow: 0 4px 16px rgba(56,189,248,0.10);
-}
- .logo {
-   font-size: 2.2em;
-   align-items: center;
-   margin-bottom: 1em;
- }
 
-.cardGrid {
-  background: #2d323b;
-  color: #fff;
-  border-radius: var(--border-radius);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
-  padding: 1.5em 1.2em;
-  min-width: 220px;
-  max-width: 260px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 1em;
-  transition: box-shadow var(--transition);
+.detailsContent {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.3s;
 }
-.cardGrid:hover {
-  box-shadow: 0 4px 16px rgba(56,189,248,0.20);
+.detailsContentOpen {
+  max-height: 800px;
+  opacity: 1;
+  transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1), opacity 0.3s;
 }
-.gridWrap {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2em 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2em;
-  justify-items: stretch;
-  align-items: stretch;
-}
-.info {
-  flex: 1;
-}
-.infoModern {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.4em;
-  padding: 0 0.1em;
-}
-.name {
+.startupLabel {
+  color: #2563eb;
   font-weight: 600;
-  font-size: 1.1em;
-  margin-bottom: 0.2em;
+  min-width: 80px;
+  display: inline-block;
 }
-.title {
-  font-size: 1.15em;
-  font-weight: 700;
-  color: #fff;
-  margin-bottom: 0.1em;
+.startupColon {
+  display: inline-block;
+  min-width: 10px;
+  text-align: center;
+  margin-right: 0.3em;
+  color: #18181b;
+  font-weight: 600;
 }
-.desc {
-  color: #fff;
-  font-size: 1em;
-  margin-bottom: 0.2em;
-  color: #fff;
+.startupValue {
+  color: #18181b;
+  font-weight: 400;
 }
-.category {
-  font-size: 0.92em;
-  color: var(--accent-color);
-  font-weight: 500;
-  margin-bottom: 0.3em;
-}
-.field {
-  display: block;
-  margin-bottom: 0.3em;
-  font-size: 0.98em;
-  color: #333;
-  word-break: break-word;
-}
-.fieldsTable {
-  display: flex;
-  flex-direction: column;
-  gap: 0.1em;
-}
-.row {
+.startupRow {
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
-  margin-bottom: 0.15em;
-}
-.label {
-  min-width: 110px;
-  font-weight: 600;
-  color: #38bdf8;
-  text-align: right;
-  margin-right: 0.7em;
-  font-size: 0.98em;
-}
-.value {
-  flex: 1;
-  color: #18181b;
-  font-size: 0.98em;
+  align-items: center;
+  margin-bottom: 0.1em;
+  font-size: 0.97em;
   word-break: break-word;
 }
+@media (max-width: 600px) {
+  .featuredGrid {
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
+    padding: 0.6rem 0;
+  }
+  .startupCard {
+    min-width: 90vw;
+    max-width: 98vw;
+    min-height: 120px;
+    padding: 0.15em;
+  }
+  .startupImgWrap, .startupVideoWrap {
+    width: 60px;
+    height: 60px;
+  }
+}
+/* ...existing code... */
