@@ -19,9 +19,10 @@ interface FeaturedStartupsProps {
 }
 
 const FeaturedStartups: React.FC<FeaturedStartupsProps> = ({ startups }) => {
-  // Modal state for showing startup details
+  // Modal state for showing startup details or video
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedStartup, setSelectedStartup] = useState<Startup | null>(null);
+  const [videoUrl, setVideoUrl] = useState<string | null>(null);
 
   // Runtime check for duplicate IDs
   const [duplicateIds, setDuplicateIds] = useState<string[]>([]);
@@ -43,8 +44,13 @@ const FeaturedStartups: React.FC<FeaturedStartupsProps> = ({ startups }) => {
   const startupsReversed = [...startups].reverse();
   return (
     <>
-      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
-        {selectedStartup && <StartupDetails startup={selectedStartup} />}
+      <Modal isOpen={modalOpen || !!videoUrl} onClose={() => { setModalOpen(false); setVideoUrl(null); }}>
+        {modalOpen && selectedStartup && <StartupDetails startup={selectedStartup} />}
+        {videoUrl && (
+          <div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <video src={videoUrl} controls autoPlay style={{ width: '100%', maxWidth: 420, borderRadius: 12, background: '#000', aspectRatio: '16/9', maxHeight: '320px' }} />
+          </div>
+        )}
       </Modal>
       <div className={styles.featuredGrid}>
         {startupsReversed.map((startup, idx) => (
@@ -52,7 +58,7 @@ const FeaturedStartups: React.FC<FeaturedStartupsProps> = ({ startups }) => {
             <div className={styles.startupTitle}>{startup.name}</div>
             <div className={styles.startupMediaRow}>
               {startup.imageUrl && (
-                <div className={styles.startupImgWrap}>
+                <div className={styles.startupImgWrapLarge}>
                   <img
                     src={startup.imageUrl}
                     alt={startup.name + " logo"}
@@ -60,16 +66,16 @@ const FeaturedStartups: React.FC<FeaturedStartupsProps> = ({ startups }) => {
                   />
                 </div>
               )}
-              {startup.videoUrl && (
-                <div className={styles.startupVideoWrap}>
-                  <video src={startup.videoUrl} controls className={styles.startupVideo} />
-                </div>
-              )}
             </div>
-            <div className={styles.startupDetails}>
+            <div className={styles.startupDetailsRow}>
               <button className={styles.detailsBtn} onClick={() => { setSelectedStartup(startup); setModalOpen(true); }}>
                 Details
               </button>
+              {startup.videoUrl && (
+                <button className={styles.playBtn} onClick={() => setVideoUrl(startup.videoUrl)}>
+                  ▶ Play
+                </button>
+              )}
             </div>
           </div>
         ))}

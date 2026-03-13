@@ -1,3 +1,38 @@
+.startupImgWrapLarge {
+  width: 140px;
+  height: 140px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f1f5f9;
+  border-radius: 16px;
+  overflow: hidden;
+  margin: 0 auto 0.5em auto;
+}
+.startupDetailsRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 0.5em;
+  margin-top: 0.2em;
+}
+.playBtn {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.35em 1.1em;
+  font-size: 1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-left: auto;
+}
+.playBtn:hover {
+  background: #1d4ed8;
+}
 .startupDetailsModalContent {
   padding: 0.5em 0 0 0;
 }
