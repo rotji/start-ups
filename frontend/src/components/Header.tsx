@@ -8,7 +8,7 @@ export default function Header() {
       <nav style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: '2em' }}>
         <a href="/" style={{ color: '#18181b', fontWeight: 'bold', fontSize: '1.3em', textDecoration: 'none' }}>Home</a>
         <a href="/startups" style={{ color: '#18181b', fontWeight: 'bold', fontSize: '1.3em', textDecoration: 'none' }}>Start-ups</a>
-        <a href="/dashboard" style={{ color: '#18181b', fontWeight: 'bold', fontSize: '1.3em', textDecoration: 'none' }}>Dashboard</a>
+        {/* Dashboard link removed as requested */}
       </nav>
     </div>
   );

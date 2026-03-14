@@ -11,7 +11,7 @@ export default function HomeHero() {
           Join the start-ups community and be part of the next big thing.
         </p>
         <div className={styles.actions}>
-          <a href="/explore" className={styles.cta}>Explore Start-ups</a>
+          {/* 'Explore Start-ups' button removed as requested */}
           <a href="/create-startup" className={styles.createCta}>Create Start-up</a>
         </div>
       </div>
