@@ -24,21 +24,7 @@ const FeaturedStartups: React.FC<FeaturedStartupsProps> = ({ startups }) => {
   const [selectedStartup, setSelectedStartup] = useState<Startup | null>(null);
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
 
-  // Runtime check for duplicate IDs
-  const [duplicateIds, setDuplicateIds] = useState<string[]>([]);
-  React.useEffect(() => {
-    const idCounts: Record<string, number> = {};
-    startups.forEach(s => {
-      if (s.id) {
-        idCounts[s.id] = (idCounts[s.id] || 0) + 1;
-      }
-    });
-    const duplicates = Object.entries(idCounts).filter(([_, count]) => count > 1).map(([id]) => id);
-    setDuplicateIds(duplicates);
-    if (duplicates.length > 0) {
-      console.warn('[FeaturedStartups] Duplicate startup IDs detected:', duplicates);
-    }
-  }, [startups]);
+  // Removed unused duplicateIds state
 
   // Show newest startups first
   const startupsReversed = [...startups].reverse();

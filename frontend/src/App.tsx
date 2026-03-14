@@ -50,7 +50,7 @@ export default function App() {
       <main className={styles.mainContent}>
         <Routes>
           <Route path="/" element={<HomeHero />} />
-          <Route path="/startups" element={<Startups startups={startups} loading={loading} error={error} />} />
+          <Route path="/startups" element={<Startups />} />
           <Route path="/create-startup" element={<CreateStartup onCreated={handleCreated} />} />
         </Routes>
       </main>
@@ -63,6 +63,12 @@ export default function App() {
             <a href="/privacy">Privacy</a>
             <a href="/terms">Terms</a>
           </nav>
+          <div style={{ marginTop: '0.7em', fontSize: '1em' }}>
+            <span>Contact: </span>
+            <a href="mailto:starrotji@gmail.com" style={{ color: '#2563eb', textDecoration: 'underline' }}>starrotji@gmail.com</a>
+            <span style={{ margin: '0 0.7em' }}>|</span>
+            <a href="https://wa.me/2348082205654" target="_blank" rel="noopener noreferrer" style={{ color: '#2563eb', textDecoration: 'underline' }}>WhatsApp: +23408082205654</a>
+          </div>
           <small>&copy; {new Date().getFullYear()} start-ups. All rights reserved.</small>
         </div>
       </footer>
