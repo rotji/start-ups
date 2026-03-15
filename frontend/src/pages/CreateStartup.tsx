@@ -1,4 +1,6 @@
+// ...existing code...
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from '../styles/CreateStartup.module.css';
 import MediaUpload from '../components/MediaUpload';
 
@@ -9,6 +11,7 @@ const CATEGORIES = [
 ];
 
 export default function CreateStartup({ onCreated }: { onCreated?: () => void } = {}) {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     name: '',
     description: '',
@@ -37,6 +40,10 @@ export default function CreateStartup({ onCreated }: { onCreated?: () => void } 
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!form.imageUrl) {
+      setError('Image upload is required.');
+      return;
+    }
     setLoading(true);
     setError(null);
     setSuccess(false);
@@ -53,6 +60,9 @@ export default function CreateStartup({ onCreated }: { onCreated?: () => void } 
         name: '', description: '', category: '', problems: '', stage: '', team: '', fundingNeeds: '', pitchDeckUrl: '', pitchVideoUrl: '', demoUrl: '', revenue: '', phone: '', email: '', socialMedia: '', imageUrl: '', videoUrl: ''
       });
       if (onCreated) onCreated();
+      setTimeout(() => {
+        navigate('/startups');
+      }, 2000);
     } catch {
       setError('Could not create start-up. Please try again.');
     } finally {
@@ -84,7 +94,7 @@ export default function CreateStartup({ onCreated }: { onCreated?: () => void } 
         <textarea name="team" value={form.team} onChange={handleChange} placeholder="Team Members" />
         <input name="phone" value={form.phone} onChange={handleChange} placeholder="Phone Number" required />
         <input name="email" value={form.email} onChange={handleChange} placeholder="Email" type="email" required />
-        <input name="socialMedia" value={form.socialMedia} onChange={handleChange} placeholder="Social Media Links" required />
+        <input name="socialMedia" value={form.socialMedia} onChange={handleChange} placeholder="Social Media Links (optional)" />
         <input name="fundingNeeds" value={form.fundingNeeds} onChange={handleChange} placeholder="Funding Needs" />
         <input name="pitchDeckUrl" value={form.pitchDeckUrl} onChange={handleChange} placeholder="Pitch Deck URL" />
         <input name="pitchVideoUrl" value={form.pitchVideoUrl} onChange={handleChange} placeholder="Pitch Video URL" />
@@ -99,7 +109,7 @@ export default function CreateStartup({ onCreated }: { onCreated?: () => void } 
           <option value="2m-10m">2m - 10m dollars</option>
         </select>
         <MediaUpload
-          label="Upload Logo/Image"
+          label="Upload Logo/Image (required)"
           accept="image/*"
           type="image"
           onUpload={(url: string) => setForm(f => ({ ...f, imageUrl: url }))}

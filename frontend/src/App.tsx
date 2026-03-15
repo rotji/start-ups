@@ -18,7 +18,7 @@ export default function App() {
       </main>
       <footer className={styles.footer}>
         <div className={styles.footerContent}>
-          <span className={styles.footerLogo}>start-ups</span>
+          <span className={styles.footerLogo}>start-ups collection</span>
           <nav className={styles.footerNav}>
             <a href="/about">About</a>
             <a href="/contact">Contact</a>
@@ -30,7 +30,7 @@ export default function App() {
             <span><span className="icon">💬</span><a href="https://wa.me/2348082205654" target="_blank" rel="noopener noreferrer">WhatsApp: +23408082205654</a></span>
           </div>
           <div className={styles.footerCopyright}>
-            &copy; {new Date().getFullYear()} start-ups. All rights reserved.
+            &copy; {new Date().getFullYear()} start-ups collection. All rights reserved.
           </div>
         </div>
       </footer>
