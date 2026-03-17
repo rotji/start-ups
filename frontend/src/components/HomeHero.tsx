@@ -1,5 +1,4 @@
-import React from 'react';
-import styles from '../styles/HomeHero.module.css';
+// ...existing code...
 
 export default function HomeHero() {
   return (
