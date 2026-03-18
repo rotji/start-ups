@@ -148,10 +148,8 @@
   .startupCard {
     min-width: 92vw;
     max-width: 98vw;
-    min-height: 80px;
-    max-height: 180px;
-    padding: 0.08em;
     border-radius: 12px;
+    /* Remove min-height, max-height, and padding overrides so details/content match large screens */
   }
   .startupImgWrap, .startupVideoWrap {
     width: 40px;
