@@ -142,18 +142,24 @@
 @media (max-width: 600px) {
   .featuredGrid {
     grid-template-columns: 1fr;
-    gap: 0.7rem;
-    padding: 0.6rem 0;
+    gap: 0.4rem;
+    padding: 0.3rem 0;
   }
   .startupCard {
-    min-width: 90vw;
+    min-width: 92vw;
     max-width: 98vw;
-    min-height: 120px;
-    padding: 0.15em;
+    min-height: 80px;
+    max-height: 180px;
+    padding: 0.08em;
+    border-radius: 12px;
   }
   .startupImgWrap, .startupVideoWrap {
-    width: 60px;
-    height: 60px;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+  }
+  .startupTitle {
+    font-size: 0.98em;
   }
 }
 /* ...existing code... */

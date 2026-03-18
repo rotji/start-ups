@@ -1,7 +1,7 @@
 @media (max-width: 600px) {
   .header {
     background: linear-gradient(90deg, #18181b 60%, #2563eb 100%);
-    min-height: 90px;
+    min-height: 130px;
     padding: 0;
     border-bottom: 1.5px solid #27272a;
     box-shadow: 0 2px 16px rgba(24,24,27,0.08);
@@ -10,8 +10,8 @@
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
-    padding: 1.2em 1em 1.2em 1em;
-    gap: 0.7em;
+    padding: 2.2em 1em 1.2em 1em;
+    gap: 2.2em;
   }
   .logo {
     font-size: 1.1em;
