@@ -10,6 +10,8 @@ interface Startup {
   founder: string;
   industry: string;
   website: string;
+  imageUrl?: string;
+  videoUrl?: string;
   logoUrl?: string;
   [key: string]: any;
 }
@@ -58,7 +60,7 @@ const FeaturedStartups: React.FC<FeaturedStartupsProps> = ({ startups }) => {
                 Details
               </button>
               {startup.videoUrl && (
-                <button className={styles.playBtn} onClick={() => setVideoUrl(startup.videoUrl)}>
+                <button className={styles.playBtn} onClick={() => setVideoUrl(startup.videoUrl ?? null)}>
                   ▶ Play
                 </button>
               )}
