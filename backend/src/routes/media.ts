@@ -19,19 +19,15 @@ const upload = multer({
 
 router.post('/upload', upload.single('file'), async (req, res) => {
   try {
-    console.log('[media/upload] Incoming upload request:', req.file?.originalname, req.file?.mimetype, req.file?.size);
     if (!req.file) {
-      console.error('[media/upload] No file uploaded');
       return res.status(400).json({ error: 'No file uploaded' });
     }
     const isVideo = req.file.mimetype.startsWith('video/');
-    console.log('[media/upload] Detected type:', isVideo ? 'video' : 'image');
     let responded = false;
     const timeoutMs = 60000; // 60 seconds
     const timeout = setTimeout(() => {
       if (!responded) {
         responded = true;
-        console.error('[media/upload] ERROR: Cloudinary upload timed out after', timeoutMs, 'ms');
         res.status(504).json({ error: 'Cloudinary upload timed out' });
       }
     }, timeoutMs);
@@ -43,16 +39,13 @@ router.post('/upload', upload.single('file'), async (req, res) => {
       },
       (error, result) => {
         if (responded) {
-          console.warn('[media/upload] Callback called after response sent.');
           return;
         }
         clearTimeout(timeout);
         if (error || !result) {
-          console.error('[media/upload] Cloudinary error:', error);
           responded = true;
           return res.status(500).json({ error: error?.message || 'Upload failed' });
         }
-        console.log('[media/upload] Cloudinary upload success:', result.secure_url);
         responded = true;
         res.json({ url: result.secure_url, public_id: result.public_id });
       }
@@ -61,18 +54,13 @@ router.post('/upload', upload.single('file'), async (req, res) => {
       if (!responded) {
         responded = true;
         clearTimeout(timeout);
-        console.error('[media/upload] Cloudinary stream error:', err);
         res.status(500).json({ error: 'Cloudinary stream error: ' + err.message });
       }
     });
     uploadStream.on('finish', () => {
-      console.log('[media/upload] Cloudinary stream finished sending data.');
     });
-    console.log('[media/upload] Piping file buffer to Cloudinary...');
     uploadStream.end(req.file.buffer);
-    console.log('[media/upload] File buffer sent.');
   } catch (err: any) {
-    console.error('[media/upload] Server error:', err);
     res.status(500).json({ error: err.message });
   }
 });

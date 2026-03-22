@@ -11,13 +11,10 @@ export class MongoStartupRepository implements StartupRepository {
 
   constructor(collection?: Collection<Startup>) {
     this.collection = collection || getDb(DB_NAME).collection<Startup>(COLLECTION_NAME);
-    console.log('[MongoStartupRepository] Using DB:', DB_NAME, 'Collection:', COLLECTION_NAME);
   }
 
   async create(startup: Startup): Promise<Startup> {
-    console.log('[MongoStartupRepository] Creating startup:', JSON.stringify(startup, null, 2));
     const result = await this.collection.insertOne(startup);
-    console.log('[MongoStartupRepository] Insert result:', result.insertedId);
     return startup;
   }
 
@@ -35,9 +32,7 @@ export class MongoStartupRepository implements StartupRepository {
   }
 
   async findAll(filter: Partial<Startup> = {}): Promise<Startup[]> {
-    console.log('[MongoStartupRepository] Finding all startups with filter:', filter);
     const startups = await this.collection.find(filter).toArray();
-    console.log('[MongoStartupRepository] Found startups:', startups.length);
     return startups;
   }
 

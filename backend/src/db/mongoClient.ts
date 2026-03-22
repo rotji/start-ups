@@ -14,10 +14,8 @@ let isConnected = false;
 
 export async function connectMongo() {
   if (!isConnected) {
-    console.log('[mongoClient] Connecting to MongoDB...');
     await client.connect();
     isConnected = true;
-    console.log('[mongoClient] Connected to MongoDB');
   }
   return client;
 }

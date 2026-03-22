@@ -22,7 +22,6 @@ const Startups: React.FC = () => {
       if (!res.ok) throw new Error('Failed to fetch startups');
       const data = await res.json();
       const startupsArr = Array.isArray(data) ? data : data.startups || [];
-      console.log('[Startups] Fetched startups:', startupsArr);
       setStartups(startupsArr);
     } catch (err) {
       setError('Could not load startups.');

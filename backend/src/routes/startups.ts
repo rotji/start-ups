@@ -12,7 +12,6 @@ router.post('/', async (req, res) => {
   try {
     // Accept JSON only
     const data = req.body;
-    console.log('[POST /api/startups] Incoming request:', data);
     const now = new Date();
     const startup = {
       id: new ObjectId().toString(),
@@ -36,18 +35,13 @@ router.post('/', async (req, res) => {
       updatedAt: now,
       createdBy: '',
     };
-    console.log('[POST /api/startups] Startup object to create:', startup);
     await repo.create(startup);
-    console.log('[POST /api/startups] Startup created successfully');
     res.status(201).json({ success: true, startup });
   } catch (err) {
-    console.error('[POST /api/startups] Error:', err);
     res.status(500).json({ error: 'Failed to create startup' });
   }
 });
 
-// GET /api/startups - list all startups (for now, all as featured)
-// GET /api/startups - list all startups with advanced filtering
 router.get('/', async (req, res) => {
   try {
     // Build filter from query params
@@ -65,12 +59,9 @@ router.get('/', async (req, res) => {
       if (revenueMax) filter.revenue.$lte = revenueMax;
     }
     // Add more filters as needed
-    console.log('[GET /api/startups] Fetching startups with filter:', filter);
     const startups = await repo.findAll(filter);
-    console.log('[GET /api/startups] Returning startups:', startups.length);
     res.json({ startups });
   } catch (err) {
-    console.error('[GET /api/startups] Error:', err);
     res.status(500).json({ error: 'Failed to fetch startups' });
   }
 });

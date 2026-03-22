@@ -21,24 +21,19 @@ const MediaUpload: React.FC<MediaUploadProps> = ({ label, accept, onUpload, type
     setUploading(true);
     setPreview(null);
     try {
-      console.log('[MediaUpload] File selected:', file);
       // Preview
       setPreview(URL.createObjectURL(file));
       // Upload
       const formData = new FormData();
       formData.append('file', file);
-      console.log('[MediaUpload] Starting upload to backend...');
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/media/upload`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
-      console.log('[MediaUpload] Upload success:', res.data);
       onUpload(res.data.url);
     } catch (err: any) {
-      console.error('[MediaUpload] Upload error:', err);
       setError(err.response?.data?.error || 'Upload failed');
     } finally {
       setUploading(false);
-      console.log('[MediaUpload] Upload finished.');
     }
   };
 
